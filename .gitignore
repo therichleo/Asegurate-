@@ -1,0 +1,22 @@
+# Dependencias de Node
+node_modules/
+frontend-next/node_modules/
+api-node/node_modules/
+workspace/
+
+# Variables de Entorno y Secretos (¡Lo más importante!)
+.env
+.env.local
+.env.*
+*.env
+
+# Archivos de build de Next.js
+frontend-next/.next/
+out/
+build/
+
+# Archivos del Sistema Operativo y logs
+.DS_Store
+Thumbs.db
+npm-debug.log*
+yarn-error.log*

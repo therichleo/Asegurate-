@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+  @page { size: A4; margin: 2.5cm 2cm; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Georgia', serif; font-size: 11pt; color: #1a1a2e; line-height: 1.6; }
+
+  .header { text-align: center; border-bottom: 3px solid #1a3a6b; padding-bottom: 16px; margin-bottom: 24px; }
+  .logo-text { font-size: 26pt; font-weight: bold; color: #1a3a6b; letter-spacing: 2px; }
+  .logo-sub { font-size: 10pt; color: #4a5568; margin-top: 4px; letter-spacing: 1px; }
+
+  h1 { font-size: 14pt; text-align: center; color: #1a3a6b; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+
+  .section { margin-bottom: 18px; }
+  .section-title { font-size: 10pt; font-weight: bold; color: #1a3a6b; text-transform: uppercase; border-bottom: 1px solid #cbd5e0; padding-bottom: 4px; margin-bottom: 10px; letter-spacing: 0.5px; }
+
+  .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+  .data-item { display: flex; flex-direction: column; }
+  .data-label { font-size: 8pt; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; }
+  .data-value { font-size: 11pt; font-weight: bold; color: #2d3748; }
+
+  .amount-box { background: #1a3a6b; color: white; padding: 16px 24px; border-radius: 4px; text-align: center; margin: 24px 0; }
+  .amount-label { font-size: 9pt; letter-spacing: 1px; opacity: 0.85; }
+  .amount-value { font-size: 22pt; font-weight: bold; margin-top: 4px; }
+
+  .clause { margin-bottom: 12px; font-size: 10pt; text-align: justify; }
+  .clause-num { font-weight: bold; color: #1a3a6b; }
+
+  .signatures { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 48px; }
+  .signature-block { text-align: center; }
+  .signature-line { border-top: 1px solid #2d3748; padding-top: 8px; margin-top: 40px; }
+  .signature-name { font-weight: bold; font-size: 10pt; }
+  .signature-role { font-size: 9pt; color: #718096; }
+
+  .footer { text-align: center; font-size: 8pt; color: #a0aec0; border-top: 1px solid #e2e8f0; padding-top: 12px; margin-top: 32px; }
+
+  .badge { display: inline-block; background: #e8f4fd; color: #1a3a6b; border: 1px solid #1a3a6b; padding: 3px 10px; border-radius: 12px; font-size: 9pt; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-text">ASEGÚRATE!</div>
+  <div class="logo-sub">Plataforma de Contratación de Servicios Profesionales</div>
+</div>
+
+<h1>Contrato de Prestación de Servicios N° {{ request_id[:8].upper() }}</h1>
+
+<div class="section">
+  <div class="section-title">Datos del Contratante</div>
+  <div class="data-grid">
+    <div class="data-item">
+      <span class="data-label">Empresa / Razón Social</span>
+      <span class="data-value">{{ company_name }}</span>
+    </div>
+    <div class="data-item">
+      <span class="data-label">RUT</span>
+      <span class="data-value">{{ rut }}</span>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Detalle del Servicio</div>
+  <div class="data-grid">
+    <div class="data-item">
+      <span class="data-label">Tipo de Servicio</span>
+      <span class="data-value">{{ 'Personal de Seguridad' if service_type == 'seguridad' else 'Auxiliares de Aseo' }}</span>
+    </div>
+    <div class="data-item">
+      <span class="data-label">Estado</span>
+      <span class="badge">PAGADO</span>
+    </div>
+    <div class="data-item">
+      <span class="data-label">Fecha de Inicio</span>
+      <span class="data-value">{{ start_date }}</span>
+    </div>
+    <div class="data-item">
+      <span class="data-label">Fecha de Término</span>
+      <span class="data-value">{{ end_date }}</span>
+    </div>
+    <div class="data-item">
+      <span class="data-label">Total de Horas</span>
+      <span class="data-value">{{ total_hours }} horas</span>
+    </div>
+    <div class="data-item">
+      <span class="data-label">Orden de Compra</span>
+      <span class="data-value">{{ buy_order }}</span>
+    </div>
+  </div>
+</div>
+
+<div class="amount-box">
+  <div class="amount-label">MONTO TOTAL PAGADO</div>
+  <div class="amount-value">${{ "{:,.0f}".format(amount).replace(",", ".") }} CLP</div>
+</div>
+
+<div class="section">
+  <div class="section-title">Cláusulas</div>
+  <p class="clause"><span class="clause-num">PRIMERO:</span> La empresa proveedora Asegúrate! se compromete a disponer del personal indicado en el presente contrato durante las fechas y horarios acordados.</p>
+  <p class="clause"><span class="clause-num">SEGUNDO:</span> El personal destacado cumplirá con las funciones propias del servicio contratado, ajustándose a las normativas vigentes.</p>
+  <p class="clause"><span class="clause-num">TERCERO:</span> El pago del monto indicado, acreditado mediante transacción electrónica Transbank Webpay, constituye aceptación plena de las presentes condiciones.</p>
+  <p class="clause"><span class="clause-num">CUARTO:</span> Cualquier modificación al presente contrato deberá ser acordada por escrito entre ambas partes con al menos 48 horas de anticipación.</p>
+</div>
+
+<div class="signatures">
+  <div class="signature-block">
+    <div class="signature-line">
+      <div class="signature-name">{{ company_name }}</div>
+      <div class="signature-role">Empresa Contratante</div>
+      <div class="signature-role">RUT: {{ rut }}</div>
+    </div>
+  </div>
+  <div class="signature-block">
+    <div class="signature-line">
+      <div class="signature-name">Asegúrate! SpA</div>
+      <div class="signature-role">Empresa Proveedora</div>
+      <div class="signature-role">Representante Legal</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Documento generado electrónicamente el {{ transaction_date }} — Asegúrate! Plataforma Digital de Servicios<br>
+  Este documento tiene validez legal conforme a la Ley 19.799 sobre Documentos Electrónicos de Chile.
+</div>
+
+</body>
+</html>
