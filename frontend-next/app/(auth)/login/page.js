@@ -1,11 +1,14 @@
 'use client';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '../../../lib/supabase';
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectPath = searchParams.get('redirect');
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -24,7 +27,13 @@ export default function LoginPage() {
       return;
     }
 
-    // Verificar si es admin
+    // Si viene de la landing con redirect (ej: /solicitud), ir directo
+    if (redirectPath) {
+      router.push(redirectPath);
+      return;
+    }
+
+    // Sin redirect: ir a panel según rol
     const { data: profile } = await supabase.from('users').select('role').eq('id', data.user.id).single();
     if (profile?.role === 'admin') {
       router.push('/admin');
@@ -87,5 +96,13 @@ export default function LoginPage() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }
