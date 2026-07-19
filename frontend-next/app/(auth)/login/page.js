@@ -71,7 +71,7 @@ function LoginForm() {
             />
           </div>
 
-          <div className="mb-6">
+          <div className="mb-2">
             <label className="label">Contraseña</label>
             <input
               type="password"
@@ -81,6 +81,12 @@ function LoginForm() {
               placeholder="••••••••"
               required
             />
+          </div>
+
+          <div className="text-right mb-6">
+            <Link href="/recuperar-password" className="text-sm text-brand-600 hover:underline">
+              Olvidé mi contraseña
+            </Link>
           </div>
 
           <button type="submit" disabled={loading} className="btn-primary w-full">
